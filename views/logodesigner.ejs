@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Designers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .upper-part{
+            display: flex;
+
+        }
+        .lower-part{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .profile-card:hover{
+            box-shadow: 8px 8px 8px plum; /* Green shadow */
+             transition: box-shadow 0.3s ease;
+             transform: scale(1.03);
+             transition: transform 0.3s ease;
+
+        }
+        .profile-card:active {
+      transform: scale(0.98); /* Slightly reduces size for click effect */
+      box-shadow: 0 2px 4px rgba(0, 128, 0, 0.5); /* Reduced shadow for click effect */
+    }
+    </style>
+</head>
+<body class="bg-purple-300 text-gray-900">
+    <div class="container mx-auto py-10">
+        <!-- Header Section -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-black-700">Logo Designers</h1>
+            <p class="text-xl text-black-500">200+ Logo Designers | Average Rating 5.9+</p>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="flex justify-center items-center gap-6 mb-8">
+            <div class="text-center">
+                <p class="text-2xl font-bold text-black-500">4.9+</p>
+                <p class="text-sm text-gray-600">Rating</p>
+            </div>
+            <button class="bg-purple-500 text-white px-6 py-2 rounded-full text-lg hover:bg-purple-600">Hire Now</button>
+        </div>
+
+        <!-- Cards Section -->
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ml-6 mr-6 gap-10 px-8">
+            <% freelancers.forEach(function(freelancer) { %>
+              <div class="bg-purple-200 p-4 rounded-lg text-center profile-card">
+               <div class="bg-purple-200 upper-part pr-4 mr-2">
+                <img
+                  class="w-20 h-20 mx-auto rounded-full"
+                  src="<%= freelancer.image %>"
+                  alt="profile_pic"
+                />
+                <div>
+                <h3 class="mt-4 text-xl font-semibold"><%= freelancer.name %></h3>
+                <p class="text-purple-400"><%= freelancer.role %></p>
+                </div>
+               </div>
+                <p class="mt-2 text-gray-600 mr-20">
+                  ⭐ <%= freelancer.rating %> (<%= freelancer.reviews %> reviews)
+                </p>
+                <div class="lower-part bg-purple-200">
+                <p class="mt-2 text-lg font-bold mr-4">$<%= freelancer.rate %>/hr</p>
+                <button class="mt-4 bg-purple-500 text-white py-2 px-4 rounded-lg ml-6">
+                  Hire Now
+                </button>
+               </div>
+              </div>
+            <% }) %>
+          </div>
+
+        <!-- Footer Section -->
+        <div class="mt-12 text-center">
+            <p class="text-gray-500">Powered by Logo Designers | 2025</p>
+        </div>
+    </div>
+</body>
+</html>

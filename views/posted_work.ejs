@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .filter-pill {
+            transition: all 0.3s ease;
+        }
+        .filter-pill.active {
+            background-color: #22c55e;
+            color: white;
+        }
+        .filter {
+            width: 95%;
+            margin: auto;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div class="container mx-auto p-8">
+        <!-- Navigation Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-4xl font-bold text-green-500 ml-10">Work Details</h1>
+            <a href="/new_work" class="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 transition-colors">
+                Post Work
+            </a>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="mb-8 bg-gray-800 p-2 rounded-lg filter">
+            <!-- Search Bar -->
+            <div class="relative mb-6">
+                <i data-lucide="search" class="absolute left-3 top-3 h-5 w-5 text-gray-400"></i>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search by title or description..."
+                    class="w-full pl-10 pr-4 py-2 bg-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+            </div>
+
+            <!-- Skills Filter -->
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">Filter by Skills:</h3>
+                <div class="flex flex-wrap gap-2" id="skillsFilter">
+                    <% 
+                    const allSkills = [...new Set(allWork.flatMap(work => work.skills))];
+                    allSkills.forEach(skill => { 
+                    %>
+                        <button
+                            class="filter-pill px-3 py-1 rounded-full bg-gray-700 text-gray-300"
+                            data-skill="<%= skill %>"
+                        >
+                            <%= skill %>
+                        </button>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <% if (allWork.length === 0) { %>
+            <p class="text-center text-gray-400">No works have been posted yet.</p>
+        <% } else { %>
+
+        <!-- Work Listings Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 px-8" id="workListings">
+            <% allWork.forEach((work, index) => { %>
+                <div class="work-card bg-gray-800 rounded-lg shadow-lg p-6 mb-8" 
+                     data-skills="<%= work.skills.join(',') %>"
+                     data-title="<%= work.title.toLowerCase() %>"
+                     data-description="<%= work.description.toLowerCase() %>">
+                    
+                    <h2 class="text-2xl font-semibold mb-4">
+                        Title: <span class="text-green-500"><%= work.title %></span>
+                    </h2>
+
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center">
+                            <% if (work.image && work.image.url) { %>
+                                <img src="/assets/profile_pic.jpg" alt="Default Profile" class="w-32 h-32 object-cover rounded-full border border-green-500">
+            />
+                            <% } else { %>
+                                <img
+                                class="w-20 h-20 mx-auto rounded-full"
+                                src="<%= work.profile_image.url %>"
+                                alt="profile_pic"/>
+                               
+                            <% } %>
+                            
+                            <p class="ml-4 max-w-md line-clamp-2"><%= work.description %></p>
+                        </div>
+                        <button class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors ml-4">
+                            Apply
+                        </button>
+                    </div>
+
+                    <div class="flex justify-between items-start mt-4">
+                        <div>
+                            <p class="mb-2">
+                                Budget: 
+                                <span class="text-green-500 font-semibold">
+                                    <%= work.budget.currency %> <%= work.budget.min %> - <%= work.budget.max %>
+                                </span>
+                            </p>
+                            <p>
+                                Deadline: 
+                                <span class="text-green-500 font-semibold">
+                                    <%= new Date(work.deadline).toLocaleDateString() %>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2">Skills Required:</h3>
+                            <ul class="list-disc list-inside">
+                                <% work.skills.forEach(skill => { %>
+                                    <li class="text-green-500"><%= skill %></li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="mt-4">
+                        Posted By: <span class="text-green-500 font-semibold"><%= work.postedby || "Anonymous" %></span>
+                    </p>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    <% } %>
+
+    <script>
+        // Initialize Lucide icons
+        // lucide.createIcons();
+
+        // Get DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const skillButtons = document.querySelectorAll('.filter-pill');
+        const workCards = document.querySelectorAll('.work-card');
+
+        // Track selected skills
+        const selectedSkills = new Set();
+
+        // Filter function
+        function filterWorks() {
+            const searchTerm = searchInput.value.toLowerCase();
+
+            workCards.forEach(card => {
+                const title = card.dataset.title;
+                const description = card.dataset.description;
+                const skills = card.dataset.skills.split(',');
+
+                const matchesSearch = 
+                    title.includes(searchTerm) || 
+                    description.includes(searchTerm);
+
+                const matchesSkills = 
+                    selectedSkills.size === 0 || 
+                    [...selectedSkills].every(skill => skills.includes(skill));
+
+                card.style.display = 
+                    matchesSearch && matchesSkills ? 'block' : 'none';
+            });
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', filterWorks);
+
+        skillButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const skill = button.dataset.skill;
+                button.classList.toggle('active');
+                
+                if (selectedSkills.has(skill)) {
+                    selectedSkills.delete(skill);
+                } else {
+                    selectedSkills.add(skill);
+                }
+                
+                filterWorks();
+            });
+        });
+    </script>
+</body>
+</html>

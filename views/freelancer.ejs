@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .upper-part{
+            display: flex;
+
+        }
+        .lower-part{
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .profile-card:hover{
+            box-shadow: 8px 8px 8px rgba(0, 128, 0, 0.5); /* Green shadow */
+             transition: box-shadow 0.3s ease;
+             transform: scale(1.03);
+             transition: transform 0.3s ease;
+
+        }
+        .profile-card:active {
+      transform: scale(0.98); /* Slightly reduces size for click effect */
+      box-shadow: 0 2px 4px rgba(0, 128, 0, 0.5); /* Reduced shadow for click effect */
+    }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white">
+    <!-- Header Section -->
+    <section class="text-center py-12 ml-20 mr-20 pl-20 pr-20">
+       
+      <h1 class="text-3xl font-bold">
+        <code class="text-green-500">&lt;/&gt;</code> Freelancing ! 
+      </h1>
+      <p class="mt-4 text-lg">
+        Connect with expert freelancers who can bring your digital vision to
+        life. Our platform hosts <br> skilled professionals specializing in frontend,
+        backend, and full-stack development,editing and many more ensuring your <br> project's success
+        with cutting-edge technologies and best practices.
+      </p>
+      <div class="mt-6 flex justify-center space-x-8 text-green-400">
+        <div>
+          <p class="text-xl font-semibold">50+</p>
+          <p class="text-sm">Active Freelancers</p>
+        </div>
+        <div>
+          <p class="text-xl font-semibold">4.8</p>
+          <p class="text-sm">Average Rating</p>
+        </div>
+        <div>
+          <p class="text-xl font-semibold">50+</p>
+          <p class="text-sm">Projects Completed</p>
+        </div>
+     
+    </div>
+    </section>
+
+    <!-- Freelancers Section -->
+    <section class="py-10 bg-gray-800 p-8 p-8">
+      <h2 class="text-2xl font-bold text-center">Top Rated Freelancers</h2>
+      <div class="w-full h-12 flex items-center justify-end"><a href="/create_profilr" class="h-full w-28  rounded-xl bg-green-500 text-black font-semibold flex items-center justify-center text-[20px] hover:bg-green-600">Register</a></div>
+      <!-- Responsive Grid for Freelancers -->
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ml-6 mr-6 gap-10 px-8">
+        <% freelancers.forEach(function(freelancer) { %>
+          <a href="/freelancer/<%= freelancer._id %>">
+          <div class="bg-gray-700 p-4 rounded-lg text-center profile-card">
+           <div class="bg-gray-700 upper-part pr-4 mr-2">
+            <img
+              class="w-20 h-20 mx-auto rounded-full"
+              src="<%= freelancer.image.url %>"
+              alt="profile_pic"
+            />
+            <div>
+            <h3 class="mt-4 text-xl font-semibold"><%= freelancer.name %></h3>
+            <p class="text-green-400"><%= freelancer.role %></p>
+            </div>
+           </div>
+            <p class="mt-2 text-yellow-400 mr-20">
+              ⭐ <%= freelancer.rating %> (<%= freelancer.reviews %> reviews)
+            </p>
+            <div class="lower-part bg-gray-700">
+            <p class="mt-2 text-lg font-bold mr-4">$<%= freelancer.rate %>/hr</p>
+            <button class="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg ml-6">
+              Hire Now
+            </button>
+           </div>
+          </div>
+        </a>
+        <% }) %>
+      </div>
+    </section>
+  </body>
+</html>

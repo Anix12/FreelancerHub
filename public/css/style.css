@@ -1,0 +1,9 @@
+
+.hover-effect {
+    transition: all 0.3s ease;
+  }
+.hover-effect:hover {
+    text-decoration: underline;
+    text-shadow: 8px 8px 16px rgba(8, 245, 8, 1);
+    scale: 1.1;
+  }
