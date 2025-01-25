@@ -8,6 +8,7 @@ const mongoUrl = "mongodb://127.0.0.1:27017/freelancer";
 const Work=require('./models/work');
 const multer = require('multer');
 const Freelancer=require('./models/freelancer');
+const methodOverride = require('method-override');
 
 main()
     .then(() => {
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use(methodOverride('_method'));
 
 
 
@@ -222,6 +224,45 @@ app.post('/work', upload.single('image'), async (req, res) => {
               });
           }
       }
+  });
+
+//   Destroy the Freelancer Profile
+  app.delete("/freelancer/:id", async(req, res,)=>{
+    let {id} = req.params;
+    const deletedFreelancer = await Freelancer.findByIdAndDelete(id);
+    console.log("deleted freelancer:",deletedFreelancer);
+    res.redirect("/freelancer");
+
+  });
+
+  // Update the Freelancer Profile
+  app.put("/freelancer/:id",upload.single('image'), async(req, res)=>{
+     const { id } = req.params; 
+    const data = req.body; 
+
+    const updatedFreelancer = await Freelancer.findByIdAndUpdate(id, data, { new: true });
+
+    //if file uploaded
+    if (req.file) {
+      const { path: url, filename } = req.file;
+
+      updatedFreelancer.image = {
+        url,
+        filename,
+      };
+      await updatedFreelancer.save();
+    }
+    console.log("Updated Freelancer:", updatedFreelancer);
+    res.redirect(`/freelancer/${id}`);
+  });
+
+  //edite form render
+  app.get("/freelancer/:id/edit", async(req, res)=>{
+    let {id} = req.params;
+    const oldFreelancer = await Freelancer.findById(id);
+    // let originalImageUrl = profile_image.url;
+    // originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+   res.render("profile_edit.ejs", {oldFreelancer})
   });
   
   const findFreelancerById = async (id) => {
