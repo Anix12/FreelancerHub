@@ -64,8 +64,13 @@
       <div class="w-full h-12 flex items-center justify-end"><a href="/create_profilr" class="h-full w-28  rounded-xl bg-green-500 text-black font-semibold flex items-center justify-center text-[20px] hover:bg-green-600">Register</a></div>
       <!-- Responsive Grid for Freelancers -->
       <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 ml-6 mr-6 gap-10 px-8">
+
+
+        <!-- //bgg hita change kalay me --  <=% freelancer._id %> -->
+
+
         <% freelancers.forEach(function(freelancer) { %>
-          <a href="/freelancer/<%= freelancer._id %>">
+          <a href="/detail-freelancer">                           
           <div class="bg-gray-700 p-4 rounded-lg text-center profile-card">
            <div class="bg-gray-700 upper-part pr-4 mr-2">
             <img

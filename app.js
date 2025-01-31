@@ -61,6 +61,9 @@ const storage = multer.diskStorage({
 app.get("/", (req, res) => {
     res.render("Home.ejs");
 });
+app.get("/detail-freelancer", (req, res)=>{
+  res.render("freeProfile");
+})
 
 
 app.get("/about-us", (req, res) => {
