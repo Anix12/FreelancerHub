@@ -95,9 +95,20 @@
                             
                             <p class="ml-4 max-w-md line-clamp-2"><%= work.description %></p>
                         </div>
+                        <div>
                         <button class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors ml-4">
                             Apply
                         </button>
+                        <!-- Inside Each Work  -->
+                         <form class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 mt-2 transition-colors "
+                         method="post" action="/delete_work/<%= work._id %>?_method=DELETE">
+                       <button 
+                         data-id="<%= work.id %>">
+                          Delete
+                        </button>
+                        </form>
+                    </div>
+
                     </div>
 
                     <div class="flex justify-between items-start mt-4">

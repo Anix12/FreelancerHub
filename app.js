@@ -61,9 +61,9 @@ const storage = multer.diskStorage({
 app.get("/", (req, res) => {
     res.render("Home.ejs");
 });
-app.get("/detail-freelancer", (req, res)=>{
-  res.render("freeProfile");
-})
+// app.get("/detail-freelancer", (req, res)=>{
+//   res.render("freeProfile");
+// })
 
 
 app.get("/about-us", (req, res) => {
@@ -171,7 +171,7 @@ app.post('/work', upload.single('image'), async (req, res) => {
     try {
         const freelancer = await Freelancer.findById(req.params.id);
         console.log(freelancer.image.url)
-        res.render('freelancer_profile', { sampleData: freelancer });
+        res.render('freeProfile.ejs', { sampleData: freelancer });
     } catch (err) {
         console.error(err);
         res.status(500).send('Error retrieving freelancer data');
@@ -280,6 +280,18 @@ app.post('/work', upload.single('image'), async (req, res) => {
         console.error('Error finding freelancer:', error);
     }
   };
+
+  //destroy work
+  app.delete('/delete_work/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Work.findByIdAndDelete(id); 
+        res.redirect("/posted_work");
+    } catch (error) {
+        res.status(500).send({ error: "Failed to delete work" });
+    }
+});
+
 
 
 // app.get("/freelancer_profile", (req, res) => {
