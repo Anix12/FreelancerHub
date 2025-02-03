@@ -9,6 +9,7 @@ const Work=require('./models/work');
 const multer = require('multer');
 const Freelancer=require('./models/freelancer');
 const methodOverride = require('method-override');
+const Contact = require("./models/contact");
 
 main()
     .then(() => {
@@ -292,7 +293,23 @@ app.post('/work', upload.single('image'), async (req, res) => {
     }
 });
 
+app.post("/contact", async (req, res) => {
+  
+      const { name, email, message } = req.body;
+  
+      // Validate request data before saving
+      if (!name || !email || !message) {
+        return res.status(400).json({ error: "All fields are required" });
+      }
+  
+      const newContact = new Contact({ name, email, message });
+      await newContact.save();
+    console.log(newContact);
 
+    res.redirect("/");
+      
+   
+  });
 
 // app.get("/freelancer_profile", (req, res) => {
 //     const sampleData =  {
